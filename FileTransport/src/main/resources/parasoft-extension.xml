@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://schemas.parasoft.com/extensibility-framework/v1/extension"
+ type="transport"
+ name="File Transport"
+ description="An extensible transport provided to SOAtest via the Extensibility Framework">
+    <class>com.parasoft.soavirt.transport.file.FileTransport</class>
+    <form xmlns="urn:com/parasoft/extensibility-framework/gui">
+        <section label="File Paths">
+            <field label="Input File" />
+            <field label="Output File" />
+        </section>
+        <section label="Time Options">
+            <field label="Wait Time" />
+        </section>
+    </form>
+</extension>
