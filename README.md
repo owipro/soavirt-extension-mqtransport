@@ -8,6 +8,9 @@ Custom Extension Examples for Parasoft SOAtest and Virtualize
  * Command line
     * cd [custom extension folder]
     * mvn clean install
+ * Eclipse/SOAtest/Virtualize
+    * File > Import > Maven > Existing Maven Projects > Next
+    * Select the custom extension folder and click Finish
 
 ## Custom Transports
  * FileTransport is a file-based custom transport example.
