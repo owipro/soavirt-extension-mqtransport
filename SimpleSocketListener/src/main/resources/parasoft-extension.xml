@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://schemas.parasoft.com/extensibility-framework/v1/extension"
+    type="messageListener"
+    name="Simple Socket Message Listener"
+    description="An extensible responder provided to SOAtest via the Extensibility Framework">
+    <class>com.parasoft.virtualize.listener.example.socket.SimpleSocketMessageListener</class>
+    <form xmlns="urn:com/parasoft/extensibility-framework/gui">
+        <section label="Connection">
+            <field label="Port"/>
+            <field label="EOF Token"/>
+        </section>
+    </form>
+</extension>
