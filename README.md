@@ -1,5 +1,5 @@
-# soavirt-extension-examples
-Custom Extension Examples for Parasoft SOAtest and Virtualize
+# soavirt-extension-mqtransport
+Custom MQTransport for Parasoft SOAtest
 
 ## How to Build
  * Prerequisites
