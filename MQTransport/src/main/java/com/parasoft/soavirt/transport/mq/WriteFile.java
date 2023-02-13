@@ -1,5 +1,8 @@
 package com.parasoft.soavirt.transport.mq;
 
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class WriteFile {
     public static void writeFile(String filename, String contentToWrite){
         try {

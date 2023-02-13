@@ -1,8 +1,5 @@
 package com.parasoft.soavirt.transport.mq;
 
-import java.io.FileWriter;
-import java.io.IOException;
-
 import com.parasoft.api.ICustomMessage;
 import com.parasoft.api.ScriptingContext;
 import com.parasoft.api.transport.CustomTransportConfiguration;
@@ -39,7 +36,7 @@ public class MQTransport implements ICustomTransport {
         String putQueueName = config.getPutQueue(context);
         String getQueueName = config.getGetQueue(context);
 
-        String strMsgTxtFinal;
+        String strMsgTxtFinal = "";
 
         System.out.println("QM " + queueManagerName );
         WriteFile.writeFile("TestFile.txt","QM " + queueManagerName + " Put Queue " + getQueueName + " Get Queue " + getQueueName);
@@ -148,7 +145,7 @@ public class MQTransport implements ICustomTransport {
           System.out.println("The 4th messageID is: " + msgID);
    
           strMsgTxtFinal = msgText;
-          WriteFile.writeFile("Msg.txt","strMsgTxtFinal: " + strMsgTxtFinal)
+          WriteFile.writeFile("Msg.txt","strMsgTxtFinal: " + strMsgTxtFinal);
 
           // Close the queue
           System.out.println("Closing the queue");
