@@ -41,7 +41,6 @@ public class MQTransport implements ICustomTransport {
         System.out.println("QM " + queueManagerName );
         WriteFile.writeFile("TestFile.txt","QM " + queueManagerName + " Put Queue " + getQueueName + " Get Queue " + getQueueName);
 
-
         try {
           // Create a connection to the QueueManager
           System.out.println("Connecting to queue manager: " + queueManagerName);
@@ -51,7 +50,9 @@ public class MQTransport implements ICustomTransport {
           int putOpenOptions = MQConstants.MQOO_INPUT_AS_Q_DEF | MQConstants.MQOO_OUTPUT | MQConstants.MQOO_BROWSE;
     
           // Queue connect
-          System.out.println("Accessing PUT queue: " + putQueueName);
+//          System.out.println("Accessing PUT queue: " + putQueueName);
+          WriteFile.writeFile("TestFile.txt","Accessing PUT queue: " + putQueueName);
+
           MQQueue putQueue = queueManager.accessQueue(putQueueName, putOpenOptions);
    
           //Send 5 messages to the queue, the 4th one with a different message
@@ -71,7 +72,8 @@ public class MQTransport implements ICustomTransport {
              MQPutMessageOptions pmo = new MQPutMessageOptions();
        
              // Put the message to the queue
-             System.out.println("Sending a message...\"" + messageText + "\"");
+//             System.out.println("Sending a message...\"" + messageText + "\"");
+             WriteFile.writeFile("TestFile.txt","Sending message: " + (t+1));
              putQueue.put(msg, pmo);
            }
 
@@ -79,7 +81,7 @@ public class MQTransport implements ICustomTransport {
           int getOpenOptions = MQConstants.MQOO_INPUT_AS_Q_DEF | MQConstants.MQOO_OUTPUT | MQConstants.MQOO_BROWSE;
     
           // Connect to GET queue
-          System.out.println("Accessing GET queue: " + putQueueName);
+          WriteFile.writeFile("TestFile.txt","Accessing GET queue: " + getQueueName);
           MQQueue getQueue = queueManager.accessQueue(getQueueName, getOpenOptions);
 
           //Keep GETting messages until we find the one with the body text we want
@@ -103,15 +105,16 @@ public class MQTransport implements ICustomTransport {
                }
    
                // Get the message off the queue.
-               System.out.println("Getting Message...i=" + i);
+               WriteFile.writeFile("TestFile.txt","Getting Message " + (i+1));
                getQueue.get(rcvMessage, gmo);
        
                // And display the message text...
               // msgText = rcvMessage.readUTF();
               msgLen = rcvMessage.getMessageLength();
               msgText = rcvMessage.readUTF(); 
-   
-          
+
+              WriteFile.writeFile("TestFile.txt","Message " + (i+1) + " text " + msgText);
+              
           //     rcvMessage.seek(0);
            //    byte data[] = new byte[rcvMessage.getMessageLength()];
           //     msgText = rcvMessage.readFully(data);
@@ -119,9 +122,9 @@ public class MQTransport implements ICustomTransport {
                //Output received message length, body text and ID (readable)
                msgIDhex = rcvMessage.messageId;
                msgID = BytesToHex.bytesToHex(rcvMessage.messageId);
-               System.out.println("Message " + i + " length is: " + msgLen);
-               System.out.println("Message " + i + " body text is: " + msgText);
-               System.out.println("Message " + i + " ID is: " + msgID);
+               WriteFile.writeFile("TestFile.txt","Message " + i + " length is: " + msgLen);
+               WriteFile.writeFile("TestFile.txt","Message " + i + " body text is: " + msgText);
+               WriteFile.writeFile("TestFile.txt","Message " + i + " ID is: " + msgID);
    
                i++;
           }
@@ -135,33 +138,33 @@ public class MQTransport implements ICustomTransport {
           //Get the 4th messgage by messageID 
           MQMessage rcvMessage = new MQMessage();
           rcvMessage.messageId = msgIDhex;
-          System.out.println("Retrieving Message " + i);
+          WriteFile.writeFile("TestFile.txt","Retrieving Message " + (i+1));
           getQueue.get(rcvMessage, gmo);
          
           //Output received message length, body text and ID (readable)
           msgID = BytesToHex.bytesToHex(rcvMessage.messageId);
-          System.out.println("The 4th message length is: " + msgLen);
-          System.out.println("The 4th message is: " + msgText);
-          System.out.println("The 4th messageID is: " + msgID);
+          WriteFile.writeFile("TestFile.txt","The 4th message length is: " + msgLen);
+          WriteFile.writeFile("TestFile.txt","The 4th message is: " + msgText);
+          WriteFile.writeFile("TestFile.txt","The 4th messageID is: " + msgID);
    
           strMsgTxtFinal = msgText;
-          WriteFile.writeFile("Msg.txt","strMsgTxtFinal: " + strMsgTxtFinal);
+          WriteFile.writeFile("TestFile.txt","strMsgTxtFinal: " + strMsgTxtFinal);
 
           // Close the queue
-          System.out.println("Closing the queue");
+          WriteFile.writeFile("TestFile.txt","Closing the queue");
           getQueue.close();
     
           // Disconnect from the QueueManager
-          System.out.println("Disconnecting from the Queue Manager");
+          WriteFile.writeFile("TestFile.txt","Disconnecting from the Queue Manager");
           queueManager.disconnect();
-          System.out.println("Done!");
+          WriteFile.writeFile("TestFile.txt","Done!");
         }
         catch (MQException ex) {
-          System.out.println("An IBM MQ Error occurred : Completion Code " + ex.completionCode
+            WriteFile.writeFile("TestFile.txt","An IBM MQ Error occurred : Completion Code " + ex.completionCode
               + " Reason Code " + ex.reasonCode);
           ex.printStackTrace();
           for (Throwable t = ex.getCause(); t != null; t = t.getCause()) {
-            System.out.println("... Caused by ");
+              WriteFile.writeFile("TestFile.txt","... Caused by ");
             t.printStackTrace();
           }
     

@@ -1,7 +1,7 @@
 package com.parasoft.soavirt.transport.mq;
 
 public class BytesToHex {
-    
+
    //Functions for converting MessageID to readable
    public static final String HEX_CHARS = "0123456789ABCDEF";
 

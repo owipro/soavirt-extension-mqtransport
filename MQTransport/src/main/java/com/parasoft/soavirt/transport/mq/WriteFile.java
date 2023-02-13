@@ -2,14 +2,15 @@ package com.parasoft.soavirt.transport.mq;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Date;
 
 public class WriteFile {
     public static void writeFile(String filename, String contentToWrite){
         try {
-          FileWriter myWriter = new FileWriter(filename);
-          myWriter.write("Content: " + contentToWrite);
+          Date datetime = new Date();
+          FileWriter myWriter = new FileWriter(filename, true);
+          myWriter.write(datetime + " : " + contentToWrite + "\n");
           myWriter.close();
-          System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {
           System.out.println("An error occurred.");
           e.printStackTrace();
