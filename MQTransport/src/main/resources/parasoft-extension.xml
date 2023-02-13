@@ -7,8 +7,8 @@
     <form xmlns="urn:com/parasoft/extensibility-framework/gui">
         <section label="MQ Details">
             <field id="qM" label="Queue Manager" />
-            <field id="getQueue" label="Get Queue" />
             <field id="putQueue" label="Put Queue" />
+            <field id="getQueue" label="Get Queue" />
         </section>
     </form>
 </extension>
