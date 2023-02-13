@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://schemas.parasoft.com/extensibility-framework/v1/extension"
+ type="transport"
+ name="MQ Transport"
+ description="An extensible transport provided to SOAtest via the Extensibility Framework">
+    <class>com.parasoft.soavirt.transport.mq.MQTransport</class>
+    <form xmlns="urn:com/parasoft/extensibility-framework/gui">
+        <section label="MQ Details">
+            <field id="qM" label="Queue Manager" />
+            <field id="getQueue" label="Get Queue" />
+            <field id="putQueue" label="Put Queue" />
+        </section>
+    </form>
+</extension>
