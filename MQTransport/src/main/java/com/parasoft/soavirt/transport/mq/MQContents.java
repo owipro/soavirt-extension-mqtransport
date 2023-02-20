@@ -1,85 +1,41 @@
 package com.parasoft.soavirt.transport.mq;
-import com.parasoft.api.ICustomMessage;
-import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
-public class MQContents implements ICustomMessage<String> {
+import com.parasoft.api.DefaultCustomMessage;
 
+public class MQContents extends DefaultCustomMessage<List<String>> {
 
-    private String message;
-
-    public MQContents(String message) {
-        this.message = message;
+    public MQContents(String bodyContent, Map<String, List<String>> mqHeaders) {
+        super(bodyContent, mqHeaders);
     }
 
-	@Override
-	public byte[] getBodyBytes() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public String getHeaders() {
+        if (getHeadersMap() == null) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, List<String>> entry : getHeadersMap().entrySet()) {
+            if (sb.length() > 0) {
+                sb.append("\r\n");
+            }
+            if (entry.getKey() != null) {
 
-	@Override
-	public String getBodyString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getCharacterEncoding() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getContentType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getHeaderField(String arg0) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Collection<String> getHeaderNames() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getHeaders() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setBodyBytes(byte[] arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setBodyString(String arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setCharacterEncoding(String arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setContentType(String arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setHeader(String arg0, String arg1) {
-		// TODO Auto-generated method stub
-		
-	}
+                sb.append(entry.getKey());
+                sb.append(": ");
+            }
+            List<String> values = entry.getValue();
+            boolean first = true;
+            for (String value : values) {
+                if (first) {
+                    first = false;
+                } else {
+                    sb.append(", ");
+                }
+                sb.append(value);
+            }
+        }
+        return sb.toString();
+    }
 }

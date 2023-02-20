@@ -6,6 +6,11 @@ import com.parasoft.api.transport.CustomTransportConfiguration;
 import com.parasoft.api.transport.ICustomConnection;
 import com.parasoft.api.transport.ICustomTransport;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
+
 import com.ibm.mq.MQException;
 import com.ibm.mq.MQGetMessageOptions;
 import com.ibm.mq.MQMessage;
@@ -30,14 +35,27 @@ public class MQTransport implements ICustomTransport {
     public ICustomMessage invoke(ICustomConnection transportConnection, CustomTransportConfiguration transportConfig, ICustomMessage request, ScriptingContext context) throws Throwable {
         MQTransportConfiguration config = new MQTransportConfiguration(transportConfig);
 
-        //Get Queue Manager
+        //Get Queue Manager and Queues
         String queueManagerName = config.getQueueManager(context);
-        //Get queue details
         String putQueueName = config.getPutQueue(context);
         String getQueueName = config.getGetQueue(context);
 
         String strMsgTxtFinal = "";
 
+        //DETETE - testing reportEvent - Why doesn't this report?
+        context.reportEvent("HERE1",//"QM " + queueManagerName + " Put Queue " + getQueueName + " Get Queue " + getQueueName,
+         //   "MQTransport Extension",
+            ScriptingContext.ERROR);
+   //     context.report("HERE2");
+
+        //DELETE - get unused variable
+        String testx = context.getValue("Testx");
+        WriteFile.writeFile("TestFile.txt","Testx: " + testx);
+        
+        //DELETE - get unused Data Source value
+        String messageToSend = context.getValue("MessageDetails", "Request");
+        WriteFile.writeFile("TestFile.txt","messageToSend: " + messageToSend + ", row: " + context.getDataSourceRowIndex());
+        
         System.out.println("QM " + queueManagerName );
         WriteFile.writeFile("TestFile.txt","QM " + queueManagerName + " Put Queue " + getQueueName + " Get Queue " + getQueueName);
 
@@ -107,11 +125,27 @@ public class MQTransport implements ICustomTransport {
                // Get the message off the queue.
                WriteFile.writeFile("TestFile.txt","Getting Message " + (i+1));
                getQueue.get(rcvMessage, gmo);
-       
+               WriteFile.writeFile("TestFile.txt","Got Message " + (i+1));
+               WriteFile.writeFile("TestFile.txt","Message Length " + rcvMessage.getMessageLength());
+               WriteFile.writeFile("TestFile.txt","Message content rcvMessage.readStringOfCharLength(rcvMessage.getMessageLength()): " + rcvMessage.readStringOfCharLength(rcvMessage.getMessageLength()));
+
+               rcvMessage.seek(0);
+               byte buffer[] = new byte[rcvMessage.getMessageLength()];
+               rcvMessage.readFully(buffer);
+               WriteFile.writeFile("TestFile.txt","Message content buffer: " + buffer);
+
                // And display the message text...
               // msgText = rcvMessage.readUTF();
               msgLen = rcvMessage.getMessageLength();
-              msgText = rcvMessage.readUTF(); 
+              WriteFile.writeFile("TestFile.txt","Message Length msgLen: " + msgLen);
+              WriteFile.writeFile("TestFile.txt","Message Length msgLen: " + msgLen);
+
+              msgText = rcvMessage.readStringOfCharLength(msgLen);
+              WriteFile.writeFile("TestFile.txt","Message Length msgLen: " + msgLen);
+
+              WriteFile.writeFile("TestFile.txt","Message content buffer: " + buffer);
+
+              WriteFile.writeFile("TestFile.txt","Message text msgText: " + msgText);
 
               WriteFile.writeFile("TestFile.txt","Message " + (i+1) + " text " + msgText);
               
@@ -173,9 +207,24 @@ public class MQTransport implements ICustomTransport {
           System.out.println("An IOException occurred whilst writing to the message buffer: " + ex);
         }
 
+        //Map mqHeaders = new Map();
+        WriteFile.writeFile("TestFile.txt","strMsgTxtFinal: OUTSIDE: " + strMsgTxtFinal);
 
+        //Test adding headers to response
+        Map<String, List<String>> mqHeaders = new HashMap<String, List<String>>();
+        List<String> headerList1 = new ArrayList<String>();
+        headerList1.add("First Header Item 1");
+        headerList1.add("First Header Item 2");
+        mqHeaders.put("Header 1",headerList1);
 
-        return new MQContents(strMsgTxtFinal);
+        List<String> headerList2 = new ArrayList<String>();
+        headerList2.add("Second Header");
+        mqHeaders.put("Body",headerList2);
+
+        //Create response object to return to SOATest
+        MQContents mqcontents = new MQContents(strMsgTxtFinal, mqHeaders);
+
+        return mqcontents;
     }
 
 }
